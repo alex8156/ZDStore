@@ -1,12 +1,15 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Bootstrap 实例 - 基本表单</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/resources/jquery/jquery-3.3.1.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.codefans.net/ajaxjs/jquery-1.6.2.min.js"></script>
 </head>
 <body>
 
@@ -26,7 +29,7 @@
         <div class="form-group">
             <label for="packageName" class="col-sm-2 control-label">Icon</label>
             <input type="file" id="inputIcon">
-           <img  src="/resources/icon.png" width="100" height="100">
+           <img  id="icon" src="/resources/icon.png" width="100" height="100" alt="哈哈">
         <div class="form-group">
             <label  class="col-sm-2 control-label">Icon</label>
             <input type="file" id="packageFile">
@@ -36,7 +39,35 @@
             </div>
         </div>
 </form>
+<script type="text/javascript">
+    $(document).ready(function () {
+       $("#inputIcon").change(function () {
+          var imagePath = $("#inputIcon").val();
+          if(imagePath =="") {
+              alert("请上传应用图标")
+              return false;
+          }
+          var  strExtension = imagePath.substr(imagePath.lastIndexOf('.')+1);
+           if (strExtension != 'jpg' && strExtension != 'gif'
+               && strExtension != 'png' && strExtension != 'bmp') {
+               alert("please upload file that is a image");
+               return false;
+           }
 
+           $(this).ajax({
+               url:'/uploadIcon',
+                type:'post',
+               success:function (path) {
+                    alert("上传成功，路径为"+path)
+                   console.log("上传成功,路径为%s",path)
+                   $("#icon").attr("src",path)
+               }
+           })
+
+       });
+    });
+
+</script>
 
 
 
