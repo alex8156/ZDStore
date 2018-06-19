@@ -1,8 +1,6 @@
 package com.soling.store.controller;
 
 import com.soling.store.model.Employee;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.impl.Log4JLogger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
