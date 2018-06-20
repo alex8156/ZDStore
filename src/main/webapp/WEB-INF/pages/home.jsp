@@ -8,12 +8,12 @@
     <title>Bootstrap 实例 - 基本表单</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="/resources/jquery/jquery-3.3.1.js"></script>
+    <script src="/resources/jquery/jquery.form.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="http://www.codefans.net/ajaxjs/jquery-1.6.2.min.js"></script>
 </head>
 <body>
 
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" id="upload" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="appname" class="col-sm-2 control-label">应用名称</label>
             <div class="col-sm-10">
@@ -28,8 +28,8 @@
         </div>
         <div class="form-group">
             <label for="packageName" class="col-sm-2 control-label">Icon</label>
-            <input type="file" id="inputIcon">
-           <img  id="icon" src="/resources/icon.png" width="100" height="100" alt="哈哈">
+            <input type="file" id="inputIcon" name="file" >
+           <img id="icon" src="/resources/icon.png" width="100" height="100" alt="哈哈">
         <div class="form-group">
             <label  class="col-sm-2 control-label">Icon</label>
             <input type="file" id="packageFile">
@@ -53,17 +53,36 @@
                alert("please upload file that is a image");
                return false;
            }
-
-           $(this).ajax({
+            var formData = new FormData()
+           formData.append("file",$(this)[0].files[0])
+           // $.ajax('/uploadIcon',{
+           //      type:'post',
+           //     success:function (path) {
+           //          alert("上传成功，路径为"+path)
+           //         console.log("上传成功,路径为%s",path)
+           //         // $("#icon").attr("src",path)
+           //     },
+           //     error:function (error) {
+           //         console.log("上传出错："+error);
+           //     },
+           //     data:formData,
+           //     processData:false,
+           //     contentType: 'multipart/form-data'
+           // });
+           // $(this).ajaxSend(function () {
+           //     console.log("上传中：");
+           // });
+           var options = {
                url:'/uploadIcon',
-                type:'post',
                success:function (path) {
-                    alert("上传成功，路径为"+path)
                    console.log("上传成功,路径为%s",path)
                    $("#icon").attr("src",path)
+               },
+               error:function (error) {
+                   console.log("上传出错："+error);
                }
-           })
-
+           };
+            $("#upload").ajaxSubmit(options)
        });
     });
 
